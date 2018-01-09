@@ -1,0 +1,12 @@
+<div class="card" id=collegue-card>
+  <div class="imgContainer">
+    <img class="card-img-top" src="{{collegue.imageUrl}}" alt="Card image cap">
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{collegue.nom}}</h5>
+    <h5 class="card-text text-center" [@scoreChanged]="state">{{collegue.score}}</h5>
+  </div>
+  <div class="card-footer text-center">
+    <app-aime-deteste-buttons (aimerOuDetester)="aimerOuDetester($event)"></app-aime-deteste-buttons>
+  </div>
+</div>
