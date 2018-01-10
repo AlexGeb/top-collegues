@@ -3,7 +3,10 @@
     <img class="card-img-top" src="{{collegue.imageUrl}}" alt="Card image cap">
   </div>
   <div class="card-body">
-    <h5 class="card-title">{{collegue.nom}}</h5>
+    <h6 class="card-title">{{collegue.pseudo}}
+      <small *ngIf="collegue.name">({{collegue.name}})</small>
+    </h6>
+
     <h5 class="card-text text-center" [@scoreChanged]="state">{{collegue.score}}</h5>
   </div>
   <div class="card-footer text-center">

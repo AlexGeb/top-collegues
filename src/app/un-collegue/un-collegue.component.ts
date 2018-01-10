@@ -7,6 +7,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { ColleguesService } from '../shared/services/collegues.service';
 
 @Component({
   selector: 'app-un-collegue',
@@ -43,18 +44,27 @@ import {
 export class UnCollegueComponent implements OnInit {
   @Input() collegue: Collegue;
   state = 'normal';
-  constructor() {}
+  constructor(private collegueSvc: ColleguesService) {}
 
   ngOnInit() {}
 
   aimerOuDetester($event) {
     if ($event) {
-      this.collegue.score += 10;
-      this.state = 'like';
+      this.collegueSvc.aimerUnCollegue(this.collegue).then(collegue => {
+        this.collegue = collegue;
+        this.state = 'like';
+        this.backToNormal();
+      });
     } else {
-      this.collegue.score -= 5;
-      this.state = 'hate';
+      this.collegueSvc.detesterUnCollegue(this.collegue).then(collegue => {
+        this.collegue = collegue;
+        this.state = 'hate';
+        this.backToNormal();
+      });
     }
+  }
+
+  backToNormal() {
     setTimeout(() => {
       this.state = 'normal';
     }, 100);

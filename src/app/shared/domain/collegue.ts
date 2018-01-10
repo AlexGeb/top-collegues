@@ -1,13 +1,8 @@
 export class Collegue {
+  public name: string;
   constructor(
-    private _nom: string,
-    private _imageUrl: string,
+    public pseudo: string,
+    public imageUrl: string,
     public score: number = 10
   ) {}
-  get nom(): string {
-    return this._nom;
-  }
-  get imageUrl(): string {
-    return this._imageUrl;
-  }
 }
