@@ -52,13 +52,13 @@ export class AppComponent implements OnInit {
     if (!prenom.value || !urlImage.value) {
       this.alert = {
         type: 'danger',
-        msg: '<strong>Erreur</strong>! Il manque des informations !'
+        msg: '<strong>Erreur !</strong> Il manque des informations !'
       };
     } else {
       this.collegues.unshift(new Collegue(prenom.value, urlImage.value));
       this.alert = {
         type: 'success',
-        msg: 'Le collègue a été ajouté avec succés'
+        msg: `Le collègue ${prenom.value} a été ajouté avec succés`
       };
     }
     setTimeout(() => {
