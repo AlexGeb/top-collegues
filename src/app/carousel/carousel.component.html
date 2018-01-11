@@ -1,0 +1,12 @@
+<ngb-carousel>
+  <ng-template ngbSlide *ngFor="let col of collegues">
+    <img src="{{col.imageUrl}}">
+    <div class="carousel-caption">
+      <div class="inner-caption">
+        <h3>{{col.score}}</h3>
+        <h5>{{col.pseudo}}</h5>
+        <app-aime-deteste-buttons (aimerOuDetester)="likeOrHate($event,col)"></app-aime-deteste-buttons>
+      </div>
+    </div>
+  </ng-template>
+</ngb-carousel>

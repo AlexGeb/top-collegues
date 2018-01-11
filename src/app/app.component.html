@@ -1,5 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div class="container">
+<div class="container vue-container">
   <div class="jumbotron">
     <h1 class="display-4">Top Collègues</h1>
     <p class="lead">Les meilleurs collègues du moment</p>
@@ -19,10 +19,13 @@
     <div [innerHTML]="alert.msg"></div>
   </ngb-alert>
 
-
-  <div class="card-deck">
-    <div id="list" *ngFor="let col of collegues">
-      <app-un-collegue [collegue]="col"></app-un-collegue>
-    </div>
+  <div class="btn-group" role="group">
+    <a class="btn btn-outline-primary" routerLink="/classique" routerLinkActive="active">Classique</a>
+    <a class="btn btn-outline-primary" routerLink="/tableau" routerLinkActive="active">Tableau</a>
+    <a class="btn btn-outline-primary" routerLink="/carousel" routerLinkActive="active">Carousel</a>
+  </div>
+  <hr>
+  <div class="center">
+    <router-outlet></router-outlet>
   </div>
 </div>

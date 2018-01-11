@@ -1,27 +1,52 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { UnCollegueComponent } from './un-collegue/un-collegue.component';
 import { AimeDetesteButtonsComponent } from './aime-deteste-buttons/aime-deteste-buttons.component';
 
 import { ColleguesService } from './shared/services/collegues.service';
+import { ScorePipe } from './shared/pipe/score.pipe';
+
+import { ClassiqueComponent } from './classique/classique.component';
+import { TableauComponent } from './tableau/tableau.component';
+import { CarouselComponent } from './carousel/carousel.component';
+import { FilterComponent } from './filter/filter.component';
+import { FilterByPseudoPipe } from './shared/pipe/filter-by-pseudo.pipe';
+
+const routes: Routes = [
+  { path: 'classique', component: ClassiqueComponent },
+  { path: 'carousel', component: CarouselComponent },
+  { path: 'tableau', component: TableauComponent },
+  { path: 'detail/:pseudo', component: UnCollegueComponent },
+  { path: '', redirectTo: 'classique', pathMatch: 'full' }
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     UnCollegueComponent,
-    AimeDetesteButtonsComponent
+    AimeDetesteButtonsComponent,
+    ClassiqueComponent,
+    TableauComponent,
+    CarouselComponent,
+    ScorePipe,
+    FilterComponent,
+    FilterByPseudoPipe
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     NgbModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot(routes, { useHash: true })
   ],
   providers: [ColleguesService],
   bootstrap: [AppComponent]

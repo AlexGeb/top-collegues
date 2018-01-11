@@ -1,0 +1,15 @@
+.inner-caption {
+  background: rgba(121, 115, 115, 0.7);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+ngb-carousel {
+  width: 420px;
+  height: 420px;
+  overflow: hidden;
+}
+img {
+  width: 420px;
+  height: 420px;
+}

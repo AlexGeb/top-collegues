@@ -1,13 +1,16 @@
-<div class="card" id=collegue-card>
+<div class="card" id=collegue-card *ngIf="collegue">
   <div class="imgContainer">
-    <img class="card-img-top" src="{{collegue.imageUrl}}" alt="Card image cap">
+
+    <a [routerLink]="['/detail', collegue.pseudo]">
+      <img class="card-img-top" src="{{collegue.imageUrl}}" alt="Card image cap">
+    </a>
   </div>
-  <div class="card-body">
-    <h6 class="card-title">{{collegue.pseudo}}
+  <div class="card-body text-center">
+    <h6 class="card-title">{{collegue.pseudo | uppercase}}
       <small *ngIf="collegue.name">({{collegue.name}})</small>
     </h6>
+    <h5 class="card-text" [@scoreChanged]="state" [class.red]="collegue.score<0" [class.green]="collegue.score>0">{{collegue.score|score}}</h5>
 
-    <h5 class="card-text text-center" [@scoreChanged]="state">{{collegue.score}}</h5>
   </div>
   <div class="card-footer text-center">
     <app-aime-deteste-buttons (aimerOuDetester)="aimerOuDetester($event)"></app-aime-deteste-buttons>

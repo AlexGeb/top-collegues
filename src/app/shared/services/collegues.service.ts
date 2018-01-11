@@ -3,17 +3,23 @@ import { HttpClient } from '@angular/common/http';
 import { Collegue } from '../domain/collegue';
 import { environment } from '../../../environments/environment';
 
-interface ColleguesResponse {
-  results: string[];
-}
-
 @Injectable()
 export class ColleguesService {
   private ENDPOINT = environment.endpoint;
+
+  private collegues: Collegue[];
   constructor(private http: HttpClient) {}
 
   listerCollegues(): Promise<Collegue[]> {
-    return this.http.get<Collegue[]>(this.ENDPOINT + 'collegues').toPromise();
+    return this.collegues
+      ? Promise.resolve(this.collegues)
+      : this.http
+          .get<Collegue[]>(this.ENDPOINT + 'collegues')
+          .toPromise()
+          .then(collegues => {
+            this.collegues = collegues;
+            return this.collegues;
+          });
   }
   sauvegarder(newCollegue: Collegue): Promise<Collegue> {
     return this.http
@@ -25,6 +31,12 @@ export class ColleguesService {
   }
   detesterUnCollegue(unCollegue: Collegue): Promise<Collegue> {
     return this.patchActionCollegue(unCollegue.pseudo, 'detester');
+  }
+
+  getCollegueByPseudo(pseudo: String): Promise<Collegue> {
+    return this.listerCollegues().then(collegues => {
+      return collegues.find(col => col.pseudo === pseudo);
+    });
   }
 
   private patchActionCollegue(

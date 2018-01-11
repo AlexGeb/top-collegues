@@ -8,6 +8,7 @@ import {
   transition
 } from '@angular/animations';
 import { ColleguesService } from '../shared/services/collegues.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-un-collegue',
@@ -19,14 +20,14 @@ import { ColleguesService } from '../shared/services/collegues.service';
         'like',
         style({
           color: 'green',
-          transform: 'rotate(-90deg) scale(1.5)'
+          transform: 'rotate(-70deg) scale(1.5)'
         })
       ),
       state(
         'hate',
         style({
           color: 'red',
-          transform: 'rotate(90deg) scale(1.5)'
+          transform: 'rotate(70deg) scale(1.5)'
         })
       ),
       state(
@@ -44,9 +45,21 @@ import { ColleguesService } from '../shared/services/collegues.service';
 export class UnCollegueComponent implements OnInit {
   @Input() collegue: Collegue;
   state = 'normal';
-  constructor(private collegueSvc: ColleguesService) {}
+  private sub: any;
+  constructor(
+    private collegueSvc: ColleguesService,
+    private route: ActivatedRoute
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.collegue) {
+      this.collegueSvc
+        .getCollegueByPseudo(this.route.snapshot.params['pseudo'])
+        .then(collegue => {
+          this.collegue = collegue;
+        });
+    }
+  }
 
   aimerOuDetester($event) {
     if ($event) {
