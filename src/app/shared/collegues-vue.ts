@@ -1,35 +1,25 @@
 import { Collegue } from './domain/collegue';
 import { ColleguesService } from './services/collegues.service';
 import { OnInit } from '@angular/core';
-
+import { Observable } from 'rxjs/Observable';
 export class ColleguesVue implements OnInit {
-  public collegues: Collegue[];
+  public collegues: Observable<Collegue[]>;
 
   constructor(private collegueSvc: ColleguesService) {}
 
   ngOnInit() {
-    this.collegueSvc.listerCollegues().then(collegues => {
-      this.collegues = collegues;
-    });
+    this.collegues = this.collegueSvc.listerCollegues();
   }
 
   likeOrHate($event, col) {
-    console.log('likeOrHate : ', $event, col);
     if ($event) {
-      this.collegueSvc.aimerUnCollegue(col).then(newCol => {
+      this.collegueSvc.aimerUnCollegue(col).subscribe(newCol => {
         console.log('collegue aimé');
-        this.updateCollegue(newCol);
       });
     } else {
-      this.collegueSvc.detesterUnCollegue(col).then(newCol => {
+      this.collegueSvc.detesterUnCollegue(col).subscribe(newCol => {
         console.log('collegue detesté');
-        this.updateCollegue(newCol);
       });
     }
-  }
-
-  updateCollegue(newCol: Collegue) {
-    this.collegues.find(col => col.pseudo === newCol.pseudo).score =
-      newCol.score;
   }
 }

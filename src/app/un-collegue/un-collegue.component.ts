@@ -55,7 +55,7 @@ export class UnCollegueComponent implements OnInit {
     if (!this.collegue) {
       this.collegueSvc
         .getCollegueByPseudo(this.route.snapshot.params['pseudo'])
-        .then(collegue => {
+        .subscribe(collegue => {
           this.collegue = collegue;
         });
     }
@@ -63,13 +63,13 @@ export class UnCollegueComponent implements OnInit {
 
   aimerOuDetester($event) {
     if ($event) {
-      this.collegueSvc.aimerUnCollegue(this.collegue).then(collegue => {
+      this.collegueSvc.aimerUnCollegue(this.collegue).subscribe(collegue => {
         this.collegue = collegue;
         this.state = 'like';
         this.backToNormal();
       });
     } else {
-      this.collegueSvc.detesterUnCollegue(this.collegue).then(collegue => {
+      this.collegueSvc.detesterUnCollegue(this.collegue).subscribe(collegue => {
         this.collegue = collegue;
         this.state = 'hate';
         this.backToNormal();

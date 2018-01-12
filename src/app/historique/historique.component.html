@@ -1,0 +1,22 @@
+<div class="list-group">
+  <div class="list-group-item list-group-item-action flex-column align-items-start active">
+    <div class="d-flex w-100 justify-content-between">
+      <h5>Historique</h5>
+    </div>
+  </div>
+  <div *ngFor="let vote of votes" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <div class="img-container mb-1">
+        <img src="{{vote.voteFor.imageUrl}}" style="width:30px;height:30px;">
+      </div>
+      <h6 class="mb-1">{{vote.voteFor.pseudo}} a été {{vote.action|action}}</h6>
+      <small class="text-muted">{{vote.date | date:'dd/MM/yyyy hh:mm:ss':'+01':'fr'}}</small>
+    </div>
+    <p class="mb-1">Son score est désormais de {{vote.voteFor.score | score}}
+
+    </p>
+    <small>
+      <button type="button" class="btn btn-link" (click)="hideThisVote(vote)">Supprimer</button>
+    </small>
+  </div>
+</div>

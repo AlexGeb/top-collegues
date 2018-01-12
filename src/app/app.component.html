@@ -1,7 +1,11 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div class="container vue-container">
+<div class="container-fluid vue-container">
   <div class="jumbotron">
-    <h1 class="display-4">Top Collègues</h1>
+    <div class="row">
+      <h1 class="col display-4">Top Collègues</h1>
+      <app-is-online></app-is-online>
+    </div>
+
     <p class="lead">Les meilleurs collègues du moment</p>
 
     <div class="form-group">
@@ -12,7 +16,7 @@
       <label for="url-image">Url image :</label>
       <input type="text" class="form-control" id="url-image" #urlImage>
     </div>
-    <button class="btn btn-primary" (click)="addCollegue(prenom,urlImage)">Ajouter un nouveau collègue</button>
+    <button class="btn btn-primary" [disabled]="! (isOnlineSvc.isOnline | async)" (click)="addCollegue(prenom,urlImage)">Ajouter un nouveau collègue</button>
   </div>
 
   <ngb-alert *ngIf="alert" [type]="alert.type" (close)="alert = null">
@@ -25,7 +29,13 @@
     <a class="btn btn-outline-primary" routerLink="/carousel" routerLinkActive="active">Carousel</a>
   </div>
   <hr>
-  <div class="center">
-    <router-outlet></router-outlet>
+  <app-votre-dernier-avis></app-votre-dernier-avis>
+  <div class="row">
+    <div class="col-8 center">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="col-4">
+      <app-historique></app-historique>
+    </div>
   </div>
 </div>

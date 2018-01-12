@@ -2,49 +2,72 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Collegue } from '../domain/collegue';
 import { environment } from '../../../environments/environment';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ColleguesService {
   private ENDPOINT = environment.endpoint;
 
-  private collegues: Collegue[];
+  private _colleguesSubject: BehaviorSubject<Collegue[]> = new BehaviorSubject(
+    null
+  );
+  public collegues = this._colleguesSubject.asObservable();
+
+  private _avisSubject: BehaviorSubject<{
+    action: string;
+    collegue: Collegue;
+  }> = new BehaviorSubject(null);
+  public avis = this._avisSubject.asObservable();
   constructor(private http: HttpClient) {}
 
-  listerCollegues(): Promise<Collegue[]> {
-    return this.collegues
-      ? Promise.resolve(this.collegues)
-      : this.http
-          .get<Collegue[]>(this.ENDPOINT + 'collegues')
-          .toPromise()
-          .then(collegues => {
-            this.collegues = collegues;
-            return this.collegues;
-          });
+  listerCollegues(): Observable<Collegue[]> {
+    return this._colleguesSubject.getValue()
+      ? this.collegues
+      : this.http.get<Collegue[]>(this.ENDPOINT + 'collegues').do(collegues => {
+          this._colleguesSubject.next(collegues);
+        });
   }
-  sauvegarder(newCollegue: Collegue): Promise<Collegue> {
+  sauvegarder(newCollegue: Collegue): Observable<Collegue> {
     return this.http
       .post<Collegue>(this.ENDPOINT + 'collegues', newCollegue)
-      .toPromise();
+      .do(collegue => {
+        const currentCollegues = this._colleguesSubject.getValue();
+        currentCollegues.unshift(collegue);
+        this._colleguesSubject.next(currentCollegues);
+      });
   }
-  aimerUnCollegue(unCollegue: Collegue): Promise<Collegue> {
+  aimerUnCollegue(unCollegue: Collegue): Observable<Collegue> {
     return this.patchActionCollegue(unCollegue.pseudo, 'aimer');
   }
-  detesterUnCollegue(unCollegue: Collegue): Promise<Collegue> {
+  detesterUnCollegue(unCollegue: Collegue): Observable<Collegue> {
     return this.patchActionCollegue(unCollegue.pseudo, 'detester');
   }
 
-  getCollegueByPseudo(pseudo: String): Promise<Collegue> {
-    return this.listerCollegues().then(collegues => {
+  getCollegueByPseudo(pseudo: string): Observable<Collegue> {
+    return this.listerCollegues().map(collegues => {
       return collegues.find(col => col.pseudo === pseudo);
     });
   }
 
   private patchActionCollegue(
-    pseudo: String,
-    action: String
-  ): Promise<Collegue> {
+    pseudo: string,
+    action: string
+  ): Observable<Collegue> {
     return this.http
-      .patch<Collegue>(this.ENDPOINT + `collegues/${pseudo}`, { action })
-      .toPromise();
+      .patch<Collegue>(this.ENDPOINT + `collegues/${pseudo}`, {
+        action
+      })
+      .do(collegue => {
+        const currentCollegues = this._colleguesSubject.getValue();
+        const collegueToUpdate = currentCollegues.find(
+          col => col.pseudo === collegue.pseudo
+        );
+        collegueToUpdate.score = collegue.score;
+        this._colleguesSubject.next(currentCollegues);
+        this._avisSubject.next({ action, collegue });
+      });
   }
 }

@@ -1,0 +1,3 @@
+<ngb-alert [dismissible]="false" *ngIf="avis" [type]="avis.type" (close)="avis = null">
+  {{avis.msg}}
+</ngb-alert>

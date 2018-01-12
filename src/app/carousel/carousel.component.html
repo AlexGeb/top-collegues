@@ -1,5 +1,5 @@
 <ngb-carousel>
-  <ng-template ngbSlide *ngFor="let col of collegues">
+  <ng-template ngbSlide *ngFor="let col of collegues | async">
     <img src="{{col.imageUrl}}">
     <div class="carousel-caption">
       <div class="inner-caption">

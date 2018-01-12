@@ -1,7 +1,7 @@
 <app-filter (limite)="limite=$event" (pseudo)="filter=$event"></app-filter>
 <hr>
 <div class="card-deck">
-  <div id="list" *ngFor="let col of colleguesAsync | async | slice:0:limite | filterByPseudo:filter">
+  <div id="list" *ngFor="let col of collegues | async | slice:0:limite | filterByPseudo:filter">
     <app-un-collegue [collegue]="col"></app-un-collegue>
   </div>
 </div>

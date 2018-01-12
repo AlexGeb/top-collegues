@@ -6,7 +6,6 @@ import { Collegue } from '../domain/collegue';
 })
 export class FilterByPseudoPipe implements PipeTransform {
   transform(value: Collegue[], arg?: string): any {
-    console.log('filter pipe', value, arg);
     if (!arg) {
       return value;
     } else {

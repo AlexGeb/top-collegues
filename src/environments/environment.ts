@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  endpoint: 'https://top-collegues-backend.herokuapp.com/api/' //'http://localhost:8080/api/'
+  endpoint: 'http://localhost:8080/api/'
 };
