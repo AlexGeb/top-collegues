@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  endpoint: 'http://localhost:8080/api/'
+  endpoint: 'http://localhost:8080/api/',
+  websocketEndpoint: 'ws://localhost:8080/ws/historique'
 };

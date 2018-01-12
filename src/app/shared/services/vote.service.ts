@@ -49,7 +49,7 @@ export class VoteService {
   }
 
   socketInit() {
-    const ws = new WebSocket('ws://localhost:8080/ws/historique');
+    const ws = new WebSocket(environment.websocketEndpoint);
     const subj = new Subject<Vote>();
     ws.onmessage = msg => subj.next(JSON.parse(msg.data));
     return subj.asObservable();
