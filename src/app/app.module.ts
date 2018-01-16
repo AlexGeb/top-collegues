@@ -34,7 +34,9 @@ const routes: Routes = [
     pathMatch: 'full'
   }
 ];
-
+function tokenGetterFunc() {
+  return localStorage.getItem('access_token');
+}
 @NgModule({
   declarations: [AppComponent, LoginComponent],
   imports: [
@@ -46,7 +48,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { useHash: true, enableTracing: false }),
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => localStorage.getItem('access_token'),
+        tokenGetter: tokenGetterFunc,
         whitelistedDomains: [environment.endpoint, 'localhost:8080'],
         throwNoTokenError: false
       }
