@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ColleguesVue } from '../shared/collegues-vue';
-import { ColleguesService } from '../shared/services/collegues.service';
+import { ColleguesVue } from '../../shared/collegues-vue';
+import { ColleguesService } from '../../shared/services/collegues.service';
 
 @Component({
   selector: 'app-tableau',

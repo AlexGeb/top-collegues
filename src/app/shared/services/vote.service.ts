@@ -7,26 +7,26 @@ import { Subject } from 'rxjs/Subject';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
+import { IsOnlineService } from './is-online.service';
 
 @Injectable()
 export class VoteService {
   private ENDPOINT = environment.endpoint;
 
-  constructor(private http: HttpClient) {
-    this.getTheVotes().subscribe(votes => {
-      this._votes.next(votes);
-    });
-    this.votesSocket = this.socketInit();
-    this.votesSocket.subscribe(vote => {
-      console.log('vote', vote);
-      this.appendAndPublishTheVotes([vote]);
+  constructor(private http: HttpClient, isOnlineSvc: IsOnlineService) {
+    isOnlineSvc.isOnline.distinctUntilChanged().subscribe(status => {
+      if (status) {
+        this.getTheVotes().subscribe(votes => {
+          this._votes.next(votes);
+        });
+        this.socketInit();
+      }
     });
   }
 
   private _votes = new BehaviorSubject<Vote[]>([]);
   public votes = this._votes.asObservable();
 
-  public votesSocket: Observable<Vote>;
   getTheVotes(): Observable<Vote[]> {
     const params = new HttpParams().set(
       'since',
@@ -51,7 +51,7 @@ export class VoteService {
   socketInit() {
     const ws = new WebSocket(environment.websocketEndpoint);
     const subj = new Subject<Vote>();
-    ws.onmessage = msg => subj.next(JSON.parse(msg.data));
-    return subj.asObservable();
+    ws.onmessage = msg => this.appendAndPublishTheVotes([JSON.parse(msg.data)]);
+    ws.onclose = () => {};
   }
 }

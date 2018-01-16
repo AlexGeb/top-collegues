@@ -1,0 +1,12 @@
+.img-container {
+  margin-left: -15px;
+  margin-right: 5px;
+}
+#parent {
+  position: relative;
+}
+#parent #number {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

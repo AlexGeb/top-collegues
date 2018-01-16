@@ -6,4 +6,5 @@ export class Vote {
   voteFor: Collegue;
   action: string;
   date: Date;
+  actualScore: number;
 }

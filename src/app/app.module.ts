@@ -7,58 +7,54 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { UnCollegueComponent } from './un-collegue/un-collegue.component';
-import { AimeDetesteButtonsComponent } from './aime-deteste-buttons/aime-deteste-buttons.component';
 
 import { ColleguesService } from './shared/services/collegues.service';
 import { VoteService } from './shared/services/vote.service';
+import { AuthGuard } from './auth.guard';
+import { AuthService } from './shared/services/auth.service';
 import { IsOnlineService } from './shared/services/is-online.service';
-import { ScorePipe } from './shared/pipe/score.pipe';
-
-import { ClassiqueComponent } from './classique/classique.component';
-import { TableauComponent } from './tableau/tableau.component';
-import { CarouselComponent } from './carousel/carousel.component';
-import { FilterComponent } from './filter/filter.component';
-import { FilterByPseudoPipe } from './shared/pipe/filter-by-pseudo.pipe';
-import { VotreDernierAvisComponent } from './votre-dernier-avis/votre-dernier-avis.component';
-import { IsOnlineComponent } from './is-online/is-online.component';
-import { HistoriqueComponent } from './historique/historique.component';
-import { ActionPipe } from './shared/pipes/action.pipe';
+import { JwtModule } from '@auth0/angular-jwt';
+import { environment } from '../environments/environment';
+import { InsideModule } from './inside/inside.module';
+import { LoginComponent } from './login/login.component';
+import { SharedModule } from './shared/shared.module';
 
 const routes: Routes = [
-  { path: 'classique', component: ClassiqueComponent },
-  { path: 'carousel', component: CarouselComponent },
-  { path: 'tableau', component: TableauComponent },
-  { path: 'detail/:pseudo', component: UnCollegueComponent },
-  { path: '', redirectTo: 'classique', pathMatch: 'full' }
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'home',
+    loadChildren: './inside/inside.module#InsideModule',
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    UnCollegueComponent,
-    AimeDetesteButtonsComponent,
-    ClassiqueComponent,
-    TableauComponent,
-    CarouselComponent,
-    ScorePipe,
-    FilterComponent,
-    FilterByPseudoPipe,
-    VotreDernierAvisComponent,
-    IsOnlineComponent,
-    HistoriqueComponent,
-    ActionPipe
-  ],
+  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
+    SharedModule,
     NgbModule.forRoot(),
     HttpClientModule,
-    RouterModule.forRoot(routes, { useHash: true })
+    RouterModule.forRoot(routes, { useHash: true, enableTracing: false }),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('access_token'),
+        whitelistedDomains: [environment.endpoint]
+      }
+    }),
+    InsideModule
   ],
-  providers: [ColleguesService, IsOnlineService, VoteService],
+  providers: [
+    ColleguesService,
+    IsOnlineService,
+    VoteService,
+    AuthGuard,
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

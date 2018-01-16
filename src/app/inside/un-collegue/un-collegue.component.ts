@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Collegue } from '../shared/domain/collegue';
+import { Collegue } from '../../shared/domain/collegue';
 import {
   trigger,
   state,
@@ -7,7 +7,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import { ColleguesService } from '../shared/services/collegues.service';
+import { ColleguesService } from '../../shared/services/collegues.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

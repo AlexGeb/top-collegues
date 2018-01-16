@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { VoteService } from '../shared/services/vote.service';
+import { VoteService } from '../../shared/services/vote.service';
 import { Observable } from 'rxjs/Observable';
-import { Vote } from '../shared/domain/vote';
+import { Vote } from '../../shared/domain/vote';
 
 @Component({
   selector: 'app-historique',
@@ -12,6 +12,7 @@ export class HistoriqueComponent implements OnInit {
   constructor(private voteSvc: VoteService) {}
   votes: Vote[];
   votesToHide: number[] = [];
+
   ngOnInit() {
     this.voteSvc.votes.subscribe(votes => {
       this.votes = votes

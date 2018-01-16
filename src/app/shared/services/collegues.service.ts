@@ -6,6 +6,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/distinctUntilChanged';
+import { IsOnlineService } from './is-online.service';
 
 @Injectable()
 export class ColleguesService {
@@ -21,15 +23,29 @@ export class ColleguesService {
     collegue: Collegue;
   }> = new BehaviorSubject(null);
   public avis = this._avisSubject.asObservable();
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, isOnlineSvc: IsOnlineService) {
+    isOnlineSvc.isOnline.distinctUntilChanged().subscribe(status => {
+      if (status) {
+        this.fetchColleguesFromServer().subscribe();
+      }
+    });
+  }
 
   listerCollegues(): Observable<Collegue[]> {
     return this._colleguesSubject.getValue()
       ? this.collegues
-      : this.http.get<Collegue[]>(this.ENDPOINT + 'collegues').do(collegues => {
-          this._colleguesSubject.next(collegues);
-        });
+      : this.fetchColleguesFromServer();
   }
+
+  fetchColleguesFromServer(): Observable<Collegue[]> {
+    return this.http
+      .get<Collegue[]>(this.ENDPOINT + 'collegues')
+      .do(collegues => {
+        this._colleguesSubject.next(collegues);
+        console.log('collegues fetched ok', collegues);
+      });
+  }
+
   sauvegarder(newCollegue: Collegue): Observable<Collegue> {
     return this.http
       .post<Collegue>(this.ENDPOINT + 'collegues', newCollegue)
@@ -39,9 +55,11 @@ export class ColleguesService {
         this._colleguesSubject.next(currentCollegues);
       });
   }
+
   aimerUnCollegue(unCollegue: Collegue): Observable<Collegue> {
     return this.patchActionCollegue(unCollegue.pseudo, 'aimer');
   }
+
   detesterUnCollegue(unCollegue: Collegue): Observable<Collegue> {
     return this.patchActionCollegue(unCollegue.pseudo, 'detester');
   }

@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Collegue } from './shared/domain/collegue';
-import { ColleguesService } from './shared/services/collegues.service';
-import { Observable } from 'rxjs/Observable';
-import { IsOnlineService } from './shared/services/is-online.service';
+import { Collegue } from '../../shared/domain/collegue';
+import { ColleguesService } from '../../shared/services/collegues.service';
+import { IsOnlineService } from '../../shared/services/is-online.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-inside',
+  templateUrl: './inside.component.html',
+  styleUrls: ['./inside.component.css']
 })
-export class AppComponent implements OnInit {
+export class InsideComponent implements OnInit {
   constructor(
     private colleguesSvc: ColleguesService,
     public isOnlineSvc: IsOnlineService

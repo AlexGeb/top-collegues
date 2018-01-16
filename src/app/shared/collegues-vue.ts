@@ -8,7 +8,7 @@ export class ColleguesVue implements OnInit {
   constructor(private collegueSvc: ColleguesService) {}
 
   ngOnInit() {
-    this.collegues = this.collegueSvc.listerCollegues();
+    this.collegues = this.collegueSvc.collegues;
   }
 
   likeOrHate($event, col) {

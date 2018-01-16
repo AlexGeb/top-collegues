@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ColleguesService } from '../shared/services/collegues.service';
+import { ColleguesService } from '../../shared/services/collegues.service';
 
 @Component({
   selector: 'app-votre-dernier-avis',

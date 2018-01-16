@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Collegue } from '../shared/domain/collegue';
-import { ColleguesService } from '../shared/services/collegues.service';
-import { ColleguesVue } from '../shared/collegues-vue';
+import { Collegue } from '../../shared/domain/collegue';
+import { ColleguesService } from '../../shared/services/collegues.service';
+import { ColleguesVue } from '../../shared/collegues-vue';
 import { Observable } from 'rxjs/Observable';
+
 @Component({
   selector: 'app-classique',
   templateUrl: './classique.component.html',
