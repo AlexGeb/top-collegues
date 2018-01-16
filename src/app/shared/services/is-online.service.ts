@@ -12,7 +12,7 @@ export class IsOnlineService {
   public isOnline = this._isOnline.asObservable();
 
   constructor(private http: HttpClient) {
-    Observable.interval(2000)
+    Observable.interval(10000)
       .map(() => navigator.onLine)
       .subscribe(val => {
         if (val) {

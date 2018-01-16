@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="modal-header">
+    <h4 class="modal-title">Votre avis</h4>
+  </div>
+  <div class="modal-body">
+    <form>
+      <h5>Que pensez vous de {{pseudo}}?</h5>
+      <div class="form-group">
+        <textarea class="form-control" id="comm" rows="3" [ngModelOptions]="{standalone: true}" [(ngModel)]="comment" required #com="ngModel"
+          minlength="10" maxlength="255"></textarea>
+      </div>
+      <small>Veuillez rédiger votre avis avec un minimum de 10 caractères et un maximum de 255 caractères</small>
+      <br>
+      <small class="unvalid-msg" *ngIf="(!com.valid && (com.touched || com.dirty)) || comment.length>=255">{{getUnvalidMsg()}}</small>
+      <br>
+      <small class="unvalid-msg" *ngIf="error">{{error}}</small>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary mb-2" (click)="sendComment()" [disabled]="!com.valid">Envoyer</button>
+  </div>
+</div>

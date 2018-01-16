@@ -15,7 +15,6 @@ import { AuthService } from './shared/services/auth.service';
 import { IsOnlineService } from './shared/services/is-online.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from '../environments/environment';
-import { InsideModule } from './inside/inside.module';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
 
@@ -28,6 +27,11 @@ const routes: Routes = [
     path: 'home',
     loadChildren: './inside/inside.module#InsideModule',
     canActivate: [AuthGuard]
+  },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
   }
 ];
 
@@ -43,10 +47,10 @@ const routes: Routes = [
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('access_token'),
-        whitelistedDomains: [environment.endpoint]
+        whitelistedDomains: [environment.endpoint, 'localhost:8080'],
+        throwNoTokenError: false
       }
-    }),
-    InsideModule
+    })
   ],
   providers: [
     ColleguesService,

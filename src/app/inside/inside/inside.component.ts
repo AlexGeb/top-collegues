@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Collegue } from '../../shared/domain/collegue';
 import { ColleguesService } from '../../shared/services/collegues.service';
 import { IsOnlineService } from '../../shared/services/is-online.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-inside',
@@ -11,11 +13,21 @@ import { IsOnlineService } from '../../shared/services/is-online.service';
 export class InsideComponent implements OnInit {
   constructor(
     private colleguesSvc: ColleguesService,
-    public isOnlineSvc: IsOnlineService
+    public isOnlineSvc: IsOnlineService,
+    private modalService: NgbModal
   ) {}
+
   displayAlert: boolean;
   alert: { type: string; msg: string };
-  ngOnInit() {}
+
+  avisForm = new FormGroup({
+    note: new FormControl(),
+    suggestions: new FormControl()
+  });
+
+  ngOnInit() {
+    this.colleguesSvc.fetchColleguesFromServer().subscribe();
+  }
   addCollegue(pseudo: HTMLInputElement, urlImage: HTMLInputElement) {
     if (!pseudo.value || !urlImage.value) {
       this.alert = {
@@ -40,5 +52,13 @@ export class InsideComponent implements OnInit {
     setTimeout(() => {
       this.alert = null;
     }, 2000);
+  }
+
+  open(content) {
+    this.modalService.open(content);
+  }
+
+  saveAvis() {
+    console.log('saaaaave : ', this.avisForm.value);
   }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -6,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  constructor(private authSvc: AuthService, private router: Router) {}
+  credentials = { username: '', password: '' };
+  ngOnInit() {}
 
-  constructor() { }
-
-  ngOnInit() {
+  login() {
+    this.authSvc
+      .login({ username: 'user', password: 'password' })
+      .subscribe(() => {
+        this.router.navigateByUrl('/home');
+      });
   }
-
 }

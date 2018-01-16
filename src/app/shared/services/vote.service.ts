@@ -8,6 +8,7 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
 import { IsOnlineService } from './is-online.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class VoteService {
@@ -50,8 +51,12 @@ export class VoteService {
 
   socketInit() {
     const ws = new WebSocket(environment.websocketEndpoint);
+
     const subj = new Subject<Vote>();
     ws.onmessage = msg => this.appendAndPublishTheVotes([JSON.parse(msg.data)]);
+    ws.onopen = () => {
+      ws.send(JSON.stringify({ token: localStorage.getItem('access_token') }));
+    };
     ws.onclose = () => {};
   }
 }

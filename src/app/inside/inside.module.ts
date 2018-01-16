@@ -14,13 +14,16 @@ import { HistoriqueComponent } from './historique/historique.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { InsideComponent } from './inside/inside.component';
+import { AuthGuard } from '../auth.guard';
+import { CommentaireComponent } from './commentaire/commentaire.component';
+import { CommentaireButtonComponent } from './commentaire-button/commentaire-button.component';
 
 const routes: Routes = [
   {
     path: '',
     component: InsideComponent,
     children: [
-      { path: '', redirectTo: 'classique', pathMatch: 'full' },
+      { path: '', redirectTo: 'classique' },
       { path: 'classique', component: ClassiqueComponent },
       { path: 'carousel', component: CarouselComponent },
       { path: 'tableau', component: TableauComponent },
@@ -45,7 +48,10 @@ const routes: Routes = [
     FilterComponent,
     VotreDernierAvisComponent,
     HistoriqueComponent,
-    InsideComponent
-  ]
+    InsideComponent,
+    CommentaireComponent,
+    CommentaireButtonComponent
+  ],
+  entryComponents: [CommentaireComponent]
 })
 export class InsideModule {}

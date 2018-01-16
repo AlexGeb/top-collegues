@@ -1,3 +1,11 @@
-<p>
-  login works!
-</p>
+<form (ngSubmit)="login(credentials)">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" placeholder="Enter username" [(ngModel)]="credentials.username" [ngModelOptions]="{standalone: true}">
+  </div>
+  <div class="form-group">
+    <label for="pass">Password</label>
+    <input type="password" class="form-control" id="pass" placeholder="Password" [(ngModel)]="credentials.password" [ngModelOptions]="{standalone: true}">
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="!credentials.password || !credentials.username">Login</button>
+</form>

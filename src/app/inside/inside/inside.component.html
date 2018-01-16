@@ -17,6 +17,7 @@
       <input type="text" class="form-control" id="url-image" #urlImage>
     </div>
     <button class="btn btn-primary" [disabled]="! (isOnlineSvc.isOnline | async)" (click)="addCollegue(prenom,urlImage)">Ajouter un nouveau collègue</button>
+    <button class="btn btn-link" (click)="open(content)">Je laisse un avis sur l'application</button>
   </div>
 
   <ngb-alert *ngIf="alert" [type]="alert.type" (close)="alert = null">
@@ -24,9 +25,9 @@
   </ngb-alert>
 
   <div class="btn-group" role="group">
-    <a class="btn btn-outline-primary" routerLink="/classique" routerLinkActive="active">Classique</a>
-    <a class="btn btn-outline-primary" routerLink="/tableau" routerLinkActive="active">Tableau</a>
-    <a class="btn btn-outline-primary" routerLink="/carousel" routerLinkActive="active">Carousel</a>
+    <a class="btn btn-outline-primary" routerLink="classique" routerLinkActive="active">Classique</a>
+    <a class="btn btn-outline-primary" routerLink="tableau" routerLinkActive="active">Tableau</a>
+    <a class="btn btn-outline-primary" routerLink="carousel" routerLinkActive="active">Carousel</a>
   </div>
   <hr>
   <app-votre-dernier-avis></app-votre-dernier-avis>
@@ -39,3 +40,33 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Votre avis compte</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="avisForm" novalidate>
+      <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" formControlName="note">
+        <label ngbButtonLabel class="btn-primary">
+          <input ngbButton type="radio" value="bad">Mauvais
+        </label>
+        <label ngbButtonLabel class="btn-primary">
+          <input ngbButton type="radio" value="good">Bon
+        </label>
+        <label ngbButtonLabel class="btn-primary">
+          <input ngbButton type="radio" value="excellent">Excellent
+        </label>
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" formControlName="suggestions" name="suggestion" rows="3" required minlength="20" maxlength="255"></textarea>
+      </div>
+    </form>
+    <pre>{{avisForm.value | json}}</pre>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="saveAvis()">Enregistrer</button>
+  </div>
+</ng-template>
